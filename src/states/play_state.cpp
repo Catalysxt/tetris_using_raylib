@@ -25,10 +25,12 @@ void PlayState::OnEnter()
 {
     // Spawn our first piece via the factory
     m_activePiece = m_factory.CreateRandomPiece();
+    m_audio->PlayGameplayMusic();
 }
 
 void PlayState::OnExit()
 {
+    m_audio->StopGameplayMusic();
     // Future: save score, cleanup resources
 }
 
@@ -141,6 +143,9 @@ bool PlayState::IsValidPosition(const Tetromino& piece) const
 
 void PlayState::Update(double dt, AudioHandler& audio)
 {
+    // Raylib requires music streams to be updated every frame!
+    audio.UpdateMusicStream();
+
     // =================================================================
     // PHASE 2: GRAVITY
     // =================================================================
@@ -176,6 +181,7 @@ void PlayState::LockPiece(AudioHandler& audio)
         // Only lock blocks that have actually entered the play area
         if (pos.y >= 0)
         {
+            m_audio->PlayLockSound();
             m_board.SetCell(pos.y, pos.x, color); // Lock the tetromino into place
         }
     }
@@ -192,12 +198,7 @@ void PlayState::LockPiece(AudioHandler& audio)
         // Note: As you reach higher levels, you can update `m_fallInterval` here to speed up the game!
         // e.g., m_fallInterval = 1.0 - ((m_score.GetLevel() - 1) * 0.05); (clamped to a minimum > 0)
         
-        audio.PlayClearSound();
-    }
-    else
-    {
-        // Simple lock sound
-        audio.PlayLockSound();
+        audio.PlayLineClearSound();
     }
 
     // 3. Spawn a new piece at the top
@@ -217,11 +218,6 @@ void PlayState::LockPiece(AudioHandler& audio)
 
 void PlayState::Render(const Renderer& renderer) const
 {
-    // Temporary rendering to prove the state machine is working.
-    // Notice how we use our abstract `renderer` instead of Raylib's
-    // BeginDrawing() directly. We also test the coordinate translation
-    // by drawing a cell at logical grid position (3, 10).
-    
     // Draw the board perimeter
     renderer.DrawBoardOutline();
 
@@ -235,6 +231,5 @@ void PlayState::Render(const Renderer& renderer) const
     renderer.DrawScoreOverlay(m_score);
 
     // Debugging text 
-    ::DrawText("Tetris Engine - Phase 5", 10, 10, 20, RAYWHITE);
     ::DrawFPS(10, 40);
 }

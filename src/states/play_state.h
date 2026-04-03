@@ -38,7 +38,6 @@ private:
     void LockPiece(AudioHandler& audio);
 
     StateManager* m_stateManager;
-    // Non-owning pointer — Application owns the AudioHandler lifetime
     AudioHandler* m_audio;
 
     Board m_board;

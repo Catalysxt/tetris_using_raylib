@@ -16,15 +16,26 @@ public:
     AudioHandler(const AudioHandler&) = delete;
     AudioHandler& operator=(const AudioHandler&) = delete;
 
-    // Semantic playback methods
+    // Music
+    void PlayGameplayMusic() const;
+    void StopGameplayMusic() const;
+    void UpdateMusicStream() const; // Called every frame
+    
+    // Sounds
     void PlayMoveSound() const;
     void PlayLockSound() const;
-    void PlayClearSound() const;
+    void PlayLineClearSound() const;
     void PlayGameOverSound() const;
 
 private:
-    // Sound assets — member variables so they live for the entire game session
-    Sound m_moveSfx{};   // {} zero-initializes so it's safe to Unload even if never loaded
+    // Sound assets 
+    Sound m_moveSfx{};   
+    Sound m_lockSfx{};
+    Sound m_lineClearSfx{};
+
+    // For background themes, we use Music instead of Sound
+    // because Music streams from disk and handles looping properly.
+    Music m_gameplayMusic{};
 
     // We track if the device successfully initialized
     bool m_deviceReady = false;
