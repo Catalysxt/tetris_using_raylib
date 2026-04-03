@@ -34,7 +34,10 @@ void Application::Run()
         // and add it to the accumulator inside GameClock.
         clock_.Tick();
 
-        // Step 2: Let the current state process input before any updates.
+        // First, update the inner workings of our Input proxy (handles things like key hold timers)
+        m_input.Update();
+
+        // Step 2: Let the current state process the evaluated input.
         // This happens once per frame (not per fixed tick) because input
         // events are inherently tied to real-time user actions.
         m_stateManager->HandleInput(m_input);

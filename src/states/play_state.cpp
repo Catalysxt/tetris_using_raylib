@@ -21,16 +21,8 @@ PlayState::PlayState(StateManager* stateManager)
 
 void PlayState::OnEnter()
 {
-    // Initialize standard test blocks
-    m_board.SetCell(19, 0, CellState::Red);
-    m_board.SetCell(19, 1, CellState::Red);
-    m_board.SetCell(19, 2, CellState::Red);
-    
-    // Create a "floating" test block to prove gravity doesn't exist yet
-    m_board.SetCell(10, 5, CellState::Cyan);
-    
     // Spawn our first piece via the factory
-    m_activePiece = m_factory.CreatePiece(PieceType::Z);
+    m_activePiece = m_factory.CreateRandomPiece();
 }
 
 void PlayState::OnExit()
@@ -130,7 +122,7 @@ bool PlayState::IsValidPosition(const Tetromino& piece) const
             // See Phase 4 learning notes for how this unifies collision!
             if (m_board.IsOccupied(pos.y, pos.x))
             {
-                return false;
+                return false; // This area is invalid 
             }
         }
     }
@@ -176,7 +168,7 @@ void PlayState::LockPiece(AudioHandler& audio)
         // Only lock blocks that have actually entered the play area
         if (pos.y >= 0)
         {
-            m_board.SetCell(pos.y, pos.x, color);
+            m_board.SetCell(pos.y, pos.x, color); // Lock the tetromino into place
         }
     }
 
@@ -201,7 +193,7 @@ void PlayState::LockPiece(AudioHandler& audio)
     }
 
     // 3. Spawn a new piece at the top
-    m_activePiece = m_factory.CreatePiece(PieceType::Z); // Keeping it as Z-piece for now per user test
+    m_activePiece = m_factory.CreateRandomPiece();
 
     // =================================================================
     // PHASE 5: GAME OVER CONDITION

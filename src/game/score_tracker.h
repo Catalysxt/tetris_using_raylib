@@ -5,11 +5,6 @@
 // ============================================================
 // LEARNING OBJECTIVES (Phase 4)
 // ============================================================
-// - Composition over Inheritance:
-//   Rather than making PlayState handle `score += 100 * level` math,
-//   we compose a ScoreTracker into it. This keeps PlayState focused
-//   on state transitions and leaves math to a dedicated component.
-// ============================================================
 
 #pragma once
 

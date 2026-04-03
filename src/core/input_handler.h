@@ -21,6 +21,10 @@ public:
     // interface to ensure our state methods don't modify the handler.
     InputHandler() = default;
 
+    // Updates internal timers for DAS (Delayed Auto Shift).
+    // Called once per frame in the main loop.
+    void Update();
+
     // Returns true if the user just pressed the Left move key.
     [[nodiscard]] bool IsMoveLeftRequested() const;
 
@@ -39,4 +43,18 @@ public:
 
     // Returns true if the user wants to pause or exit back.
     [[nodiscard]] bool IsQuitRequested() const;
+
+private:
+    // Tracks how long movement keys have been held down
+    double m_leftHoldTime = 0.0;
+    double m_rightHoldTime = 0.0;
+    
+    // Cached results calculated during Update()
+    bool m_moveLeftReady = false;
+    bool m_moveRightReady = false;
+
+    // Delayed Auto Shift (DAS): How long to hold before repeating (e.g., 170ms)
+    // Auto Repeat Rate (ARR): Time between repeats once DAS kicks in (e.g., 50ms)
+    static constexpr double DAS_DELAY = 0.17;
+    static constexpr double ARR_RATE = 0.05;
 };

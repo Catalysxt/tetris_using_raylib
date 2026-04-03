@@ -53,6 +53,12 @@ struct Position
 // Count is a common C++ trick to automatically know how many enum values exist.
 enum class PieceType : uint8_t
 {
-    I, O, T, S, Z, J, L,
+    I,
+    O,
+    T,
+    S,
+    Z,
+    J,
+    L,
     Count
 };

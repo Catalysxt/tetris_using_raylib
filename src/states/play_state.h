@@ -46,5 +46,3 @@ private:
     // Time remaining until the next automatic drop
     double m_fallTimer = 1.0;
 };
-// Change
-// Another change 
