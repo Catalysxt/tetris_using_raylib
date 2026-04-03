@@ -10,8 +10,8 @@ AudioHandler::AudioHandler()
     
     if (m_deviceReady)
     {
-        // Future: Load actual .wav files here
-        // m_moveSfx = ::LoadSound("assets/move.wav");
+        // Assign directly to the member variable so it persists beyond this function
+        m_moveSfx = ::LoadSound("audio/tetromino_movement.wav");
     }
 }
 
@@ -19,9 +19,9 @@ AudioHandler::~AudioHandler()
 {
     if (m_deviceReady)
     {
-        // Future: Unload specific sound assets
-        // ::UnloadSound(m_moveSfx);
-        
+        // RAII: unload assets before closing the device
+        ::UnloadSound(m_moveSfx);
+
         ::CloseAudioDevice();
     }
 }
@@ -29,7 +29,7 @@ AudioHandler::~AudioHandler()
 void AudioHandler::PlayMoveSound() const
 {
     if (!m_deviceReady) return;
-    // ::PlaySound(m_moveSfx);
+    ::PlaySound(m_moveSfx);
 }
 
 void AudioHandler::PlayLockSound() const

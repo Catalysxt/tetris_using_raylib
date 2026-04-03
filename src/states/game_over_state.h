@@ -8,10 +8,12 @@
 #include "../core/state_manager.h"
 #include <raylib.h>
 
+class AudioHandler;
+
 class GameOverState : public GameState
 {
 public:
-    explicit GameOverState(StateManager* stateManager);
+    explicit GameOverState(StateManager* stateManager, AudioHandler* audio);
 
     void OnEnter() override;
     void OnExit() override;
@@ -21,4 +23,5 @@ public:
 
 private:
     StateManager* m_stateManager;
+    AudioHandler* m_audio;
 };

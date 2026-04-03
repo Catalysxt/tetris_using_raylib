@@ -10,13 +10,16 @@
 #include "../game/piece_factory.h"
 #include "../game/score_tracker.h"
 
-// Forward declare StateManager to avoid circular includes
+// Forward declare to avoid circular includes
 class StateManager;
+class AudioHandler;
 
 class PlayState : public GameState
 {
 public:
-    explicit PlayState(StateManager* stateManager);
+    // AudioHandler is injected here so HandleInput can trigger sounds
+    // without needing to change the GameState interface signature.
+    explicit PlayState(StateManager* stateManager, AudioHandler* audio);
 
     void OnEnter() override;
     void OnExit() override;
@@ -35,6 +38,8 @@ private:
     void LockPiece(AudioHandler& audio);
 
     StateManager* m_stateManager;
+    // Non-owning pointer — Application owns the AudioHandler lifetime
+    AudioHandler* m_audio;
 
     Board m_board;
     PieceFactory m_factory;

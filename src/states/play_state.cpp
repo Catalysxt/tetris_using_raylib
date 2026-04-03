@@ -11,11 +11,13 @@
 #include "game_over_state.h"
 #include "../core/input_handler.h"
 #include "../core/state_manager.h"
+#include "../core/audio_handler.h"
 #include "../rendering/renderer.h"
 #include <raylib.h>
 
-PlayState::PlayState(StateManager* stateManager)
+PlayState::PlayState(StateManager* stateManager, AudioHandler* audio)
     : m_stateManager(stateManager)
+    , m_audio(audio)
 {
 }
 
@@ -48,6 +50,9 @@ void PlayState::HandleInput(const InputHandler& input)
         if (IsValidPosition(testPiece))
         {
             m_activePiece = testPiece;
+            // Only play the sound when the move actually went through.
+            // We don't want a sound when bumping into a wall!
+            m_audio->PlayMoveSound();
         }
     }
     else if (input.IsMoveRightRequested())
@@ -57,6 +62,7 @@ void PlayState::HandleInput(const InputHandler& input)
         if (IsValidPosition(testPiece))
         {
             m_activePiece = testPiece;
+            m_audio->PlayMoveSound();
         }
     }
 
@@ -67,6 +73,7 @@ void PlayState::HandleInput(const InputHandler& input)
         if (IsValidPosition(testPiece))
         {
             m_activePiece = testPiece;
+            m_audio->PlayMoveSound();
         }
     }
     else if (input.IsRotateCCWRequested())
@@ -76,6 +83,7 @@ void PlayState::HandleInput(const InputHandler& input)
         if (IsValidPosition(testPiece))
         {
             m_activePiece = testPiece;
+            m_audio->PlayMoveSound();
         }
     }
 
@@ -203,7 +211,7 @@ void PlayState::LockPiece(AudioHandler& audio)
     if (!IsValidPosition(m_activePiece))
     {
         audio.PlayGameOverSound();
-        m_stateManager->SwapState(std::make_unique<GameOverState>(m_stateManager));
+        m_stateManager->SwapState(std::make_unique<GameOverState>(m_stateManager, m_audio));
     }
 }
 

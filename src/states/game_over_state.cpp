@@ -1,12 +1,12 @@
-// game_over_state.cpp
-
 #include "game_over_state.h"
 #include "play_state.h"
 #include "../core/input_handler.h"
+#include "../core/audio_handler.h"
 #include "../rendering/renderer.h"
 
-GameOverState::GameOverState(StateManager* stateManager)
+GameOverState::GameOverState(StateManager* stateManager, AudioHandler* audio)
     : m_stateManager(stateManager)
+    , m_audio(audio)
 {
 }
 
@@ -24,7 +24,7 @@ void GameOverState::HandleInput(const InputHandler& input)
     if (input.IsHardDropRequested() || ::IsKeyPressed(KEY_ENTER))
     {
         // Swap back to a fresh PlayState!
-        m_stateManager->SwapState(std::make_unique<PlayState>(m_stateManager));
+        m_stateManager->SwapState(std::make_unique<PlayState>(m_stateManager, m_audio));
     }
 }
 

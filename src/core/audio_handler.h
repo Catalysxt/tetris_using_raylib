@@ -1,16 +1,6 @@
 // audio_handler.h
 //
 // Encapsulates the Raylib audio device and sound playback.
-//
-// ============================================================
-// LEARNING OBJECTIVES (Phase 6)
-// ============================================================
-// - Facade Pattern & RAII:
-//   This class hides the C-style Raylib audio initialization and
-//   ensures CloseAudioDevice() is always called via the destructor.
-//   It provides semantic methods (PlayLockSound) so game logic
-//   doesn't need to load or manage specific .wav files.
-// ============================================================
 
 #pragma once
 
@@ -33,10 +23,9 @@ public:
     void PlayGameOverSound() const;
 
 private:
-    // Placeholders for future loaded sound assets
-    // Sound m_moveSfx;
-    // Sound m_lockSfx;
-    
+    // Sound assets — member variables so they live for the entire game session
+    Sound m_moveSfx{};   // {} zero-initializes so it's safe to Unload even if never loaded
+
     // We track if the device successfully initialized
     bool m_deviceReady = false;
 };

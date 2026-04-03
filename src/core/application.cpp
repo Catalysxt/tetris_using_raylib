@@ -15,7 +15,7 @@ Application::Application(const WindowConfig& config)
     // Create the state manager and push the initial gameplay state.
     // Application has no idea what play state is active, either menu or game over screen. It doesn't need to.
     m_stateManager = std::make_unique<StateManager>();
-    m_stateManager->PushState(std::make_unique<PlayState>(m_stateManager.get()));
+    m_stateManager->PushState(std::make_unique<PlayState>(m_stateManager.get(), &m_audio));
 }
 
 Application::~Application()
